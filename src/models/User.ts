@@ -3,12 +3,10 @@ import mongoose, {Schema, Document} from "mongoose";
 //Interest Schema
 export interface Interest extends Document{
     name: string;
-    description: string;
 }
 
 const interestSchema: Schema<Interest> = new Schema({
     name: {type: String, required: true, unique: true},
-    description: {type: String},
 });
 
 //VideoSchema
