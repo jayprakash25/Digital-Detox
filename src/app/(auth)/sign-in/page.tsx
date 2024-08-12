@@ -12,6 +12,7 @@ const SignInPage = () => {
         callbackUrl: '/',
         redirect: false
       })
+      console.log("success signin ")
     } catch (error) {
         console.log('Eror signing in:', error)
     }

@@ -52,6 +52,9 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        animation: {
+          rotate: "rotate 10s linear infinite",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -67,6 +70,10 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        rotate: {
+          "0%": { transform: "rotate(0deg) scale(10)" },
+          "100%": { transform: "rotate(-360deg) scale(10)" },
+        },
         'flow-around': {
           '0%': { transform: 'translate(0, 0)' },
           '100%': { transform: 'translate(-50%, -50%)' },
@@ -75,7 +82,8 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'flow-around': 'flow-around 3s linear infinite',
+        // 'flow-around': 'flow-around 3s linear infinite',
+        rotate: "rotate 10s linear infinite",
       },
     },
   },

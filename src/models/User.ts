@@ -53,9 +53,13 @@ const UserSchema: Schema<User> = new Schema({
     interests: [{ type: Schema.Types.ObjectId, ref: "Interest" }],
     strictnessLevel: { type: Number, default: 3, min: 1, max: 5 },
     notificationsEnabled: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-});
+    // createdAt: { type: Date, default: Date.now },
+    // updatedAt: { type: Date, default: Date.now }
+},
+{
+    timestamps: true
+}
+);
 
 // UserVideoInteraction Schema
 export interface UserVideoInteraction extends Document {

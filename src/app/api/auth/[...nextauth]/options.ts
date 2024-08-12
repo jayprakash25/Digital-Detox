@@ -21,31 +21,37 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "google") {
         await dbConnection();
 
-        const existingUser = await UserModel.findOne({
-          googleId: profile?.sub,
-        });
-
-        if (!existingUser) {
-          await UserModel.create({
-            googleId: profile?.sub,
-            name: profile?.name,
-            email: profile?.email,
-            image: profile?.picture,
-            interests: [],
+        if (profile?.sub) {
+          const existingUser = await UserModel.findOne({
+            googleId: profile.sub,
           });
+  
+          if (!existingUser) {
+            // Create a new user if one doesn't already exist
+            await UserModel.create({
+              googleId: profile.sub,
+              name: profile.name,
+              email: profile.email,
+              image: profile.picture,
+              interests: [],
+            });
+          } else {
+            // Update the user if they already exist
+            await UserModel.findOneAndUpdate(
+              { googleId: profile.sub },
+              {
+                name: profile.name,
+                email: profile.email,
+                image: profile.picture,
+                updatedAt: new Date(),
+              }
+            );
+          }
+          return true;
         } else {
-          await UserModel.findOneAndUpdate(
-            { googleId: profile?.sub },
-
-            {
-              name: profile?.name,
-              email: profile?.email,
-              image: profile?.picture,
-              updatedAt: new Date(),
-            }
-          );
+          console.error('Profile sub is null or undefined');
+          return false; // Cancel sign-in if the profile sub is invalid
         }
-        return true;
       }
       return false;
     },
