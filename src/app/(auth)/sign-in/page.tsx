@@ -9,7 +9,7 @@ const SignInPage = () => {
   const handleGoogleSignIn = async() => {
     try {
       await signIn('google', {
-        callbackUrl: '/',
+        callbackUrl: '/interests',
         redirect: false
       })
       console.log("success signin ")

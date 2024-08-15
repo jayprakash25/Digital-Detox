@@ -25,9 +25,13 @@ export async function GET(request: Request) {
   const userId = user.id;
 
   try {
-    const user = await UserModel.findOne({ googleId: userId }).populate(
-      "interests"
-    );
+    const user = await UserModel.findOne({ googleId: userId })
+
+    console.log("user wihout populate", user);
+
+    await user.populate("interests");
+
+    console.log("user with populate", user);
 
     if (!user) {
       return Response.json(
@@ -39,7 +43,7 @@ export async function GET(request: Request) {
       );
     }
 
-    console.log(user.interests);
+    console.log(user);
 
     return Response.json(
       {
@@ -134,7 +138,7 @@ export async function POST(request: Request) {
       updateUser.interests = updateUser.interests.slice(-MAX_INTERESTS);
       await updateUser.save();
     }
-    console.log(updateUser.interests);
+    console.log(updateUser);
     return Response.json(
       {
         success: true,

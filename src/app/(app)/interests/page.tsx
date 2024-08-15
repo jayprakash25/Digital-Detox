@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 const AnimatedBorderCard = ({ category, isSelected, onSelect }: { category: Category, isSelected: boolean, onSelect: (categoryId: number) => void }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (event: { clientX: number; clientY: number; }) => {
@@ -190,24 +190,13 @@ const Interests: React.FC = () => {
 
   const continuePreviousInterests = async () => {
     setIsLoading(true);
-    try {
-      const response = await axios.post("/api/interests", {
-        interests: previousInterests,
-        replaceExisting: false,
-      });
-
-      if (response.data.success) {
-        await router.replace("/curated-feed");
-        toast({
-          title: "Continuing with previous interests",
-          description: "Your previous interests have been loaded",
-          duration: 5000,
-        });
-        // setShowCategories(true);
+    try { 
+      if (previousInterests.length > 0) {
+        router.replace("/curated-feed");
       } else {
         toast({
-          title: "Failed to continue with previous interests",
-          description: response.data.message || "Please try again later",
+          title: "No previous interests",
+          description: "Please select some interests first",
           duration: 5000,
         });
       }
