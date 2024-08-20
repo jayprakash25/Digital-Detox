@@ -2,8 +2,33 @@ import dbConnection from "@/lib/db";
 import { InterestModel, UserModel } from "@/models/User";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { getServerSession, User } from "next-auth";
+import { kv } from "@vercel/kv";
+import { NextResponse } from "next/server";
 
 const MAX_INTERESTS = 3;
+const CACHE_TTL = 3600
+
+async function getUserInterests(userId: string){
+  const cacheKey = `user:${userId}:interests`;
+
+  let cachedInterests = await kv.get(cacheKey);
+
+  if(cachedInterests){
+    return cachedInterests;
+  }
+
+  await dbConnection();
+  const user = await UserModel.findOne({ googleId: userId }).populate("interests");
+
+  if(!user){
+    return null;
+  }
+
+  const interests = user.interests;
+  await kv.set(cacheKey, JSON.stringify(interests), { ex: CACHE_TTL });
+
+  return interests;
+}
 
 export async function GET(request: Request) {
   await dbConnection();
@@ -22,33 +47,25 @@ export async function GET(request: Request) {
     );
   }
 
-  const userId = user.id;
+  const userId: string = user?.id ?? '';
 
   try {
-    const user = await UserModel.findOne({ googleId: userId })
+   const interests = await getUserInterests(userId);
 
-    console.log("user wihout populate", user);
-
-    await user.populate("interests");
-
-    console.log("user with populate", user);
-
-    if (!user) {
+    if(!interests){
       return Response.json(
         {
           success: false,
-          message: "User not found",
+          message: "Failed to get interests",
         },
         { status: 404 }
       );
     }
 
-    console.log(user);
-
     return Response.json(
       {
         success: true,
-        interests: user.interests,
+        interests: interests,
       },
       { status: 200 }
     );
@@ -64,14 +81,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  await dbConnection();
-
   const session = await getServerSession(authOptions);
-  const user: User = session?.user;
+  const user: User | undefined = session?.user;
 
-  if (!session || !session.user) {
+  if (!session || !user) {
     console.log("Not authenticated");
-    return Response.json(
+    return NextResponse.json(
       {
         success: false,
         message: "Not authenticated",
@@ -81,8 +96,6 @@ export async function POST(request: Request) {
   }
 
   const userId = user.id;
-  console.log(userId);
-
   const { interests, replaceExisting } = await request.json();
 
   if (
@@ -90,7 +103,7 @@ export async function POST(request: Request) {
     interests.length === 0 ||
     interests.length > MAX_INTERESTS
   ) {
-    return Response.json(
+    return NextResponse.json(
       {
         success: false,
         message: `Please provide 1 to ${MAX_INTERESTS} interests.`,
@@ -100,6 +113,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    await dbConnection();
     const interestIds = [];
     for (const interestName of interests) {
       let interest = await InterestModel.findOne({ name: interestName });
@@ -124,7 +138,7 @@ export async function POST(request: Request) {
     ).populate("interests");
 
     if (!updateUser) {
-      return Response.json(
+      return NextResponse.json(
         {
           success: false,
           message: "Failed to update interests",
@@ -138,8 +152,12 @@ export async function POST(request: Request) {
       updateUser.interests = updateUser.interests.slice(-MAX_INTERESTS);
       await updateUser.save();
     }
-    console.log(updateUser);
-    return Response.json(
+
+    // Update cache
+    const cacheKey = `user:${userId}:interests`;
+    await kv.set(cacheKey, JSON.stringify(updateUser.interests), { ex: CACHE_TTL });
+
+    return NextResponse.json(
       {
         success: true,
         message: "Updated interests",
@@ -148,8 +166,8 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("Failed to update interests", error);
-    return Response.json(
+    console.error("Failed to update interests", error);
+    return NextResponse.json(
       {
         success: false,
         message: "Failed to update interests",
