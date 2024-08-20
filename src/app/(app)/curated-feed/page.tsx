@@ -189,7 +189,7 @@ const CuratedFeedPage = () => {
             <Youtube className="h-6 w-6 text-red-600" />
             <span className="font-bold text-xl">CuratedTube</span>
           </div>
-          <div className="flex-grow mx-4 max-w-xl">
+          {/* <div className="flex-grow mx-4 max-w-xl">
             <div className="relative hidden md:block">
               <Input
                 type="text"
@@ -204,23 +204,23 @@ const CuratedFeedPage = () => {
                 <Search className="h-5 w-5 text-[#9b9b9b] " />
               </Button>
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center space-x-4 ">
             <Button variant="ghost" size="icon">
               <Bell className="h-6 w-6" />
             </Button>
-            <DropdownMenu>
+            <DropdownMenu >
               <DropdownMenuTrigger asChild>
-                <Avatar className="h-9 w-9">
+                <Avatar className="h-9 w-9 bg-black cursor-pointer">
                   <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
                   <AvatarFallback>JP</AvatarFallback>
                   <span className="sr-only">Toggle user menu</span>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="bg-black border-0 hover:bg-none  text-white">
                 <DropdownMenuItem>
                   <Link
-                    href="#"
+                    href="/interests"
                     className="flex items-center gap-2"
                     prefetch={false}
                   >
@@ -228,7 +228,7 @@ const CuratedFeedPage = () => {
                     <span>Change Interests</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="" />
                 <DropdownMenuItem className="text-destructive" onClick={logOut}>
                   <Link
                     href="#"

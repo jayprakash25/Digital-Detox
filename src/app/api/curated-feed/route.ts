@@ -15,7 +15,7 @@ async function getCachedOrFetchVideos(interests: { name: string }[]) {
   
   let cachedVideos = await kv.get(cacheKey);
   if (cachedVideos) {
-    return JSON.parse(cachedVideos as string);
+    return cachedVideos;
   }
 
   const videoPromises = interests.map((interest) =>
