@@ -9,15 +9,13 @@ export async function middleware(request: NextRequest) {
 
   if (token) {
     if (
-      url.pathname === "/sign-in" ,
-      url.pathname === "/"
-    ) {
+      url.pathname === "/sign-in") {
       return NextResponse.redirect(new URL("/interests", request.url));
     }
 
   } else {
     // Redirect unauthenticated users away from protected pages
-    if (url.pathname.startsWith('/interests') || url.pathname.startsWith('/curated-feed') || url.pathname.endsWith('/')) {
+    if (url.pathname.startsWith('/interests') || url.pathname.startsWith('/curated-feed')) {
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
