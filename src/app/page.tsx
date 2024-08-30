@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import dynamic from  'next/dynamic'
+import HeroSection from "@/components/landingpage/HeroSection";
 
 
 const DynamicStars = dynamic(() => import('@/components/Stars'), { ssr: false })
@@ -24,36 +25,7 @@ export default function Component() {
       ></div>
       <DynamicStars/>
 
-      <div className="absolute top-1/4 max-w-3xl text-center  left-0 right-0 m-auto">
-      <h1
-      className="text-5xl xl:text-7xl font-bold"
-      style={{
-        background: "linear-gradient(to right, #fff 60%, rgba(255, 255, 255, 0.8) 80%, rgba(255, 255, 255, 0.6) 100%)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        color: "transparent", // For fallback
-      }}
-    >
-      Experience the power of productive content
-    </h1>
-        <p className="text-[#71717a] mt-6 text-lg md:text-xl  font-medium">
-          It&apos;s the digital world now. The content you consume is the person
-          you become. You now have the flexibility to do that. We&apos;re
-          building consistently just for you to be the right person.
-        </p>
-
-        <div className="flex flex-col mt-6 items-center justify-center">
-        <button className="px-4 py-1.5  rounded-full text-gray-400 bg-black  border-[#71717a] border text-sm">Unplug now</button>
-        <span className=" h-px w-20 bg-gradient-to-r from-cyan-400/0 via-cyan-400/90 to-cyan-400/0 transition-opacity duration-500 group-hover:opacity-40"></span>
-      </div>
-
-      <div className="mt-6">
-        <p className="text-gray-400 cursor-pointer hover:text-white transition duration-300 ease-in-out text-sm">
-        Learn More
-        </p>
-      </div>
-      </div>
+     <HeroSection/>
 
       
     </div>
