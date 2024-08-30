@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## **YouTube Detoxify**
 
-## Getting Started
+Youtube Detoxify is a web-app that curates YouTube feed based on the 
+user choice. User's will see what they want to see having full control over their content.
 
-First, run the development server:
+## **What does this project do?**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+YouTube Detoxify allows users to:
+ - Select their topics of videos they want in their feed.
+ - View a customized feed based on these topics.
+ - Avoid potentially negative or distracting content ultimately providing a more focused enironment for user.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## **Why is this project useful?**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+In this digital era, content overload is a real issue and the majority of content is in videos. YouTube detoxify helps by:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+ - Avoiding exposure to distracting content.
+ - Saving time by presenting only relevant videos.
+ - Preventing burn-outs by removing unwanted content from the feed.
 
-## Learn More
+## **How do I get Started?**
 
-To learn more about Next.js, take a look at the following resources:
+**Installation**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ **1. **Clone the repository****
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    git clone https://github.com/jayprakash25/Digital-Detox.git
 
-## Deploy on Vercel
+**2. Navigate to directory**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    cd Digital-Detox
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+**3. Install dependencies**
+
+    npm install
+
+
+**4. Set up environment variables**
+
+ - create a new .env.local file by copying the contents of the .env.example.
+ - Open .env.local and fill in your actual values for each variable.
+ - Save the file.
+
+**5. Start the Development server**
+
+    npm run dev
+
+**Where can I get more help?**
+
+ - if you need more help, you can email us at jpnreddy25@gmail.com
+
+## Contribute
+
+We welcome contributors. Please see our Contrbutor Guide for more details on how to get started.
+
+## Goals of the project
+
+ 1. Provide a more productive YouTube environment.
+ 2. Reduce time wasted on distracting content.
+ 
+
+## Plan
+
+ - [x] Initial release with basic interest selection and feed curation.
+ - [ ] Implement Machine Learning for better content recommendation.
+ - [ ] Develop a chrome extension.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Made with ❤ by JP and you all.
+
+ 
