@@ -15,7 +15,7 @@ export default function Component() {
   }, [])
 
   return (
-    <div className="absolute top-1/4 inset-0  mx-40 overflow-hidden">
+    <div className="absolute top-1/4 inset-0 z-0  mx-40 overflow-hidden">
       {showStars && (
         <>
           {[...Array(100)].map((_, i) => {
