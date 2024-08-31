@@ -59,6 +59,11 @@ export default function HowItWorks() {
     }
   }, [])
 
+  const setRef = (index: number) => (el: HTMLDivElement | null) => {
+    // Update the ref array at the specified index
+    cardsRef.current[index] = el;
+  };
+
   return (
     <div className="container mx-auto mt-24 px-4">
       <h2 
@@ -81,7 +86,7 @@ export default function HowItWorks() {
         ].map((step, index) => (
           <div
             key={index}
-            ref={el => cardsRef.current[index] = el}
+            ref={setRef(index)}
             className="sticky top-1/4 bg-zinc-900 rounded-3xl p-8 shadow-lg flex flex-col items-center text-center mb-8 transition-all duration-300"
           >
             <step.icon className="w-16 h-16 mb-6 text-cyan-400" />
