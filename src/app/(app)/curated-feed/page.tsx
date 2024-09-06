@@ -243,7 +243,7 @@ const CuratedFeedPage = () => {
             </DropdownMenu>
           </div>
         </div>
-        <nav className="flex items-center sticky top-0 space-x-2 p-4  overflow-hidden overflow-x-hidden">
+        {/* <nav className="flex items-center sticky top-0 space-x-2 p-4  overflow-hidden overflow-x-hidden">
           {categories.map((category) => (
             <Button
               key={category}
@@ -254,13 +254,13 @@ const CuratedFeedPage = () => {
               {category}
             </Button>
           ))}
-        </nav>
+        </nav> */}
       </header>
 
       <main className="md:p-4">
         {selectedVideo ? (
-          <div className="flex relative  gap-8 md:gap-12 w-full max-w-6xl mx-auto py-12 md:py-16">
-            <div className="sticky  top-0  rounded-lg max-w-2xl h-96  aspect-video">
+          <div className="md:flex relative  gap-8 md:gap-12 w-full max-w-6xl mx-auto py-12 md:py-16">
+            <div className="sticky  top-0  rounded-lg md:max-w-2xl md:h-96  aspect-video">
               <iframe
                 src={selectedVideo.embedUrl}
                 frameBorder="0"
@@ -288,7 +288,7 @@ const CuratedFeedPage = () => {
                     variant="ghost"
                     size="sm"
                     onClick={toggleDescription}
-                    className="mt-2 flex items-center gap-1  duration-200"
+                    className="mt-2 flex items-center gap-1 rounded duration-200"
                   >
                     {isDescriptionExpanded ? (
                       <>
@@ -314,7 +314,7 @@ const CuratedFeedPage = () => {
               </div>
               <Button
                 onClick={onBack}
-                className="mt-4 flex bg-white text-black hover:bg-white items-center gap-2"
+                className="mt-4 flex bg-white rounded text-black hover:bg-white items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Feed
