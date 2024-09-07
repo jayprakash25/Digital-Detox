@@ -4,24 +4,15 @@ import React, { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
 
 export default function Component() {
-  const [showStars, setShowStars] = useState(false)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowStars(true)
-    }, 1000) // 1 second delay
 
-    return () => clearTimeout(timer)
-  }, [])
 
   return (
     <div className="absolute top-1/4 inset-0 z-0  mx-40 overflow-hidden">
-      {showStars && (
         <>
           {[...Array(100)].map((_, i) => {
             const randomSize = Math.random() * 3 + 1
             const randomX = Math.random() * 100 // percentage
-            const randomY = Math.random() * 100 // percentage
             const randomDelay = Math.random() * 2 // seconds
 
             return (
@@ -38,7 +29,7 @@ export default function Component() {
                   opacity: [0, 1, 1, 0],
                 }}
                 transition={{
-                  delay: randomDelay,
+                  // delay: randomDelay,
                   duration: Math.random() * 30 + 15,
                   repeat: Infinity,
                   ease: "linear",
@@ -51,7 +42,6 @@ export default function Component() {
             )
           })}
         </>
-      )}
     </div>
   )
 }
