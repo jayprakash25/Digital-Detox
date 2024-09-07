@@ -104,12 +104,12 @@ const Interests: React.FC = () => {
     setSelectedCategories(prev => {
       if (prev.includes(categoryId)) {
         return prev.filter(id => id !== categoryId)
-      } else if (prev.length < 3) {
+      } else if (prev.length < 2) {
         return [...prev, categoryId]
       } else {
         toast({
           title: "Maximum interests reached",
-          description: "You can only select up to 3 interests",
+          description: "You can only select up to 2 interests",
           duration: 5000,
         })
         return prev

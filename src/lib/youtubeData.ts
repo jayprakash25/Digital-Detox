@@ -5,11 +5,63 @@ const youtube = google.youtube({
   auth: process.env.YOUTUBE_API_KEY
 });
 
+function generateEnhancedQuery(interest: string): string {
+  // Remove any special characters and trim whitespace
+  const cleanInterest = interest.replace(/[^\w\s]/gi, '').trim();
+  
+  // Split the interest into words
+  const words = cleanInterest.split(/\s+/);
+  
+  // Generate different variations of the query
+  const variations = [
+    `${cleanInterest} explained`,
+    `${cleanInterest} in depth`,
+    `${cleanInterest} tutorial`,
+    `understanding ${cleanInterest}`,
+    `${cleanInterest} for beginners`,
+    `${cleanInterest} advanced topics`,
+    `latest in ${cleanInterest}`,
+    `${cleanInterest} trends`,
+    `${cleanInterest} analysis`,
+    `${cleanInterest} expert guide`
+  ];
+
+  // If the interest is multi-word, add some variations with quotes
+  if (words.length > 1) {
+    variations.push(`"${cleanInterest}"`);
+    variations.push(`"${cleanInterest}" overview`);
+  }
+
+  // Add some general quality indicators
+  const qualityIndicators = [
+    'high quality',
+    'in-depth',
+    'comprehensive',
+    'professional',
+    'educational'
+  ];
+
+  // Combine everything into one query
+  const enhancedQuery = [
+    cleanInterest,
+    ...variations.slice(0, 3), // Take first 3 variations
+    qualityIndicators[Math.floor(Math.random() * qualityIndicators.length)] // Add a random quality indicator
+  ].join(' OR ');
+
+  return enhancedQuery;
+}
+
 export async function fetchVideoMetadataByInterest(interest: string, maxResults = 5) {
   try {
+    const enhancedQuery = generateEnhancedQuery(interest);
+    console.log(`Enhanced query for "${interest}": ${enhancedQuery}`);
+
+    // calculate the date 10 months ago
+    const tenMonthsago = new Date();
+    tenMonthsago.setMonth(tenMonthsago.getMonth() - 10);
     const response = await youtube.search.list({
       part: ['snippet'],
-      q: interest,
+      q: enhancedQuery,
       type: ['video'],
       maxResults: maxResults * 2,
       relevanceLanguage: 'en',
@@ -17,9 +69,11 @@ export async function fetchVideoMetadataByInterest(interest: string, maxResults 
       videoDuration: 'medium',
       videoDefinition: 'high',
       order: 'relevance',
-      videoEmbeddable: 'true'
+      videoEmbeddable: 'true',
+      publishedAfter: tenMonthsago.toISOString()
     });
 
+    
     if (!response.data.items) {
       console.log('No videos found for interest:', interest);
       return [];

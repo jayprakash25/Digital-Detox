@@ -55,6 +55,7 @@ const CuratedFeedPage = () => {
 
   const fetchCuratedVideos = async () => {
     setLoading(true)
+    setVideoLoad(true)
     try {
       const response = await fetch('/api/curated-feed')
       const data = await response.json()
@@ -65,8 +66,11 @@ const CuratedFeedPage = () => {
       }
     } catch (error) {
       console.error('Error fetching curated videos:', error)
+    }finally{
+      setVideoLoad(false)
+      setLoading(false)
+
     }
-    setLoading(false)
   }
 
   const handleVideoClick = async (videoId: string) => {
@@ -121,9 +125,6 @@ const Header = () => (
         <span className="font-bold text-xl">CuratedTube</span>
       </div>
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon">
-          <Bell className="h-6 w-6" />
-        </Button>
         <UserMenu />
       </div>
     </div>
@@ -131,7 +132,7 @@ const Header = () => (
 )
 
 const LoadingBar = ({ progress }: {progress: number}) => (
-  <div className="sticky z-10 top-0 left-0 w-full h-0.5 bg-[#303030]">
+  <div className="sticky z-20 top-0 left-0 w-full h-0.5 bg-[#303030]">
     <div 
       className="h-full bg-cyan-500 transition-all duration-300 ease-out"
       style={{ width: `${progress}%` }}
@@ -148,7 +149,7 @@ const UserMenu = () => (
         <span className="sr-only">Toggle user menu</span>
       </Avatar>
     </DropdownMenuTrigger>
-    <DropdownMenuContent className="bg-black border-0 hover:bg-none text-white">
+    <DropdownMenuContent className="bg-black border-0 rounded mr-10 hover:bg-none text-white">
       <DropdownMenuItem>
         <Link href="/interests" className="flex items-center gap-2" prefetch={false}>
           <div className="h-4 w-4" />
