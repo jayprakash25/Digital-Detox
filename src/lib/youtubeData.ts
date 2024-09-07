@@ -51,7 +51,7 @@ function generateEnhancedQuery(interest: string): string {
   return enhancedQuery;
 }
 
-export async function fetchVideoMetadataByInterest(interest: string, maxResults = 5) {
+export async function fetchVideoMetadataByInterest(interest: string, maxResults = 5, pageToken?: string) {
   try {
     const enhancedQuery = generateEnhancedQuery(interest);
     console.log(`Enhanced query for "${interest}": ${enhancedQuery}`);
@@ -59,11 +59,13 @@ export async function fetchVideoMetadataByInterest(interest: string, maxResults 
     // calculate the date 10 months ago
     const tenMonthsago = new Date();
     tenMonthsago.setMonth(tenMonthsago.getMonth() - 10);
+    
     const response = await youtube.search.list({
       part: ['snippet'],
       q: enhancedQuery,
       type: ['video'],
       maxResults: maxResults * 2,
+      pageToken: pageToken,
       relevanceLanguage: 'en',
       safeSearch: 'moderate',
       videoDuration: 'medium',
@@ -76,24 +78,32 @@ export async function fetchVideoMetadataByInterest(interest: string, maxResults 
     
     if (!response.data.items) {
       console.log('No videos found for interest:', interest);
-      return [];
+      return {videos: [], nextPageToken: null};
     }
+    
 
     console.log(response.data.items);
 
     const filteredVideos = response.data.items
-      .filter((item) => item.id?.videoId && item.snippet?.thumbnails?.medium)
-      .map((item) => ({
-        id: item.id?.videoId,
-        title: item.snippet?.title,
-        thumbnail: item.snippet?.thumbnails?.maxres?.url || item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url,        channelTitle: item.snippet?.channelTitle,
-        publishedTime: item.snippet?.publishedAt
-      }));
+    .filter((item) => item.id?.videoId && item.snippet?.thumbnails?.medium)
+    .map((item) => ({
+      id: item.id?.videoId,
+      title: item.snippet?.title,
+      thumbnail: item.snippet?.thumbnails?.maxres?.url || item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url,
+      channelTitle: item.snippet?.channelTitle,
+      publishedTime: item.snippet?.publishedAt
+    }));
 
-    return filteredVideos.slice(0, maxResults);
+  return { 
+    videos: filteredVideos,
+    nextPageToken: response.data.nextPageToken || null
+  };
   } catch (error) {
     console.error('Error fetching video metadata by interest:', error);
-    return [];
+    return {
+      videos: [],
+      nextPageToken: null
+    };
   }
 }
 
@@ -106,7 +116,7 @@ export async function fetchVideoDetails(videoId: string) {
 
     if (!response.data.items || response.data.items.length === 0) {
       console.log('No video details found for id:', videoId);
-      return null;
+      return  { videos: [], nextPageToken: null };
     }
 
     const videoDetails = response.data.items[0];

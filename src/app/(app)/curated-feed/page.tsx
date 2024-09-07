@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Bell, Youtube, ArrowLeft, ChevronUp, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -32,6 +32,14 @@ interface VideoDetails {
   embedUrl: string
 }
 
+interface VideoGridProps {
+  videos: VideoMetadata[]
+  loading: boolean
+  handleVideoClick: (videoId: string) => void
+  lastVideoElementRef: (node: HTMLDivElement | null) => void
+  hasMore: boolean
+}
+
 const CuratedFeedPage = () => {
   const [videos, setVideos] = useState<VideoMetadata[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,10 +47,25 @@ const CuratedFeedPage = () => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const [videoLoad, setVideoLoad] = useState(false)
   const [loadingProgress, setLoadingProgress] = useState(0)
+  const [nextPageToken, setNextPageToken] = useState<string | null>(null)
+  const [hasMore, setHasMore] = useState(true)
+
+  const observer = useRef<IntersectionObserver | null>(null)
+  const lastVideoElementRef = useCallback((node: HTMLDivElement | null) => {
+    if (loading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        fetchCuratedVideos()
+      }
+    })
+    if (node) observer.current.observe(node)
+  }, [loading, hasMore])
 
   useEffect(() => {
     fetchCuratedVideos()
   }, [])
+
 
   useEffect(() => {
     if (videoLoad) {
@@ -57,19 +80,20 @@ const CuratedFeedPage = () => {
     setLoading(true)
     setVideoLoad(true)
     try {
-      const response = await fetch('/api/curated-feed')
+      const response = await fetch(`/api/curated-feed${nextPageToken ? `?pageToken=${nextPageToken}` : ''}`)
       const data = await response.json()
       if (data.success) {
-        setVideos(data.videos)
+        setVideos(prevVideos => [...prevVideos, ...data.videos])
+        setNextPageToken(data.nextPageToken)
+        setHasMore(!!data.nextPageToken)
       } else {
         console.error('Failed to fetch curated videos:', data.message)
       }
     } catch (error) {
       console.error('Error fetching curated videos:', error)
-    }finally{
+    } finally {
       setVideoLoad(false)
       setLoading(false)
-
     }
   }
 
@@ -109,7 +133,7 @@ const CuratedFeedPage = () => {
         {selectedVideo ? (
           <VideoPlayer video={selectedVideo} onBack={onBack} isDescriptionExpanded={isDescriptionExpanded} toggleDescription={toggleDescription} />
         ) : (
-          <VideoGrid videos={videos} loading={loading} handleVideoClick={handleVideoClick} />
+          <VideoGrid videos={videos} loading={loading} handleVideoClick={handleVideoClick} lastVideoElementRef={lastVideoElementRef} hasMore/>
         )}
       </main>
       </div>
@@ -203,13 +227,26 @@ const VideoPlayer = ({ video, onBack, isDescriptionExpanded, toggleDescription }
   </div>
 )
 
-const VideoGrid = ({ videos, loading, handleVideoClick }: { videos: VideoMetadata[], loading: boolean, handleVideoClick: (videoId: string) => void }) => (
+
+const VideoGrid: React.FC<VideoGridProps> = ({ videos, loading, handleVideoClick, lastVideoElementRef, hasMore }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-4">
-    {loading
-      ? Array(8).fill(null).map((_, index) => <VideoSkeleton key={index} />)
-      : videos.map((video) => (
-          <VideoCard key={video.id} video={video} onClick={() => handleVideoClick(video.id)} />
-        ))}
+    {videos.map((video, index) => (
+      <div 
+        key={video.id} 
+        ref={index === videos.length - 1 ? lastVideoElementRef : null}
+      >
+        <VideoCard video={video} onClick={() => handleVideoClick(video.id)} />
+      </div>
+    ))}
+    {(loading || hasMore) && (
+      <div className="col-span-full">
+        <div className="grid grid-cols-3 gap-3 items-center p-4">
+        <VideoSkeleton />
+        <VideoSkeleton />
+        <VideoSkeleton />
+        </div>
+      </div>
+    )}
   </div>
 )
 
