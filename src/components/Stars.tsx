@@ -8,8 +8,7 @@ export default function Component() {
 
 
   return (
-    <div className="absolute top-1/4 inset-0 z-0  mx-40 overflow-hidden">
-        <>
+    <div className="absolute top-1/4 inset-0 z-0  md:mx-40 overflow-hidden">
           {[...Array(100)].map((_, i) => {
             const randomSize = Math.random() * 3 + 1
             const randomX = Math.random() * 100 // percentage
@@ -41,7 +40,6 @@ export default function Component() {
               />
             )
           })}
-        </>
     </div>
   )
 }

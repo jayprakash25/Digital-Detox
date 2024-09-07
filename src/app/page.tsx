@@ -29,7 +29,7 @@ export default function Component() {
           <h1 className="hero-title text-3xl md:text-5xl">
             Experience the power of productive content
           </h1>
-          <p className="hero-subtitle">
+          <p className="hero-subtitle text-sm md:text-lg">
             It&apos;s the digital world now. The content you consume is the
             person you become. You now have the flexibility to do that.
             We&apos;re building consistently just for you to be the right
@@ -43,7 +43,7 @@ export default function Component() {
             <span className="hero-divider"></span>
           </div>
 
-          <div className="hero-learn-more">
+          <div className="mt-6 md:mt-5">
             <button
               onClick={() => scrollToSection("doyouneed")}
               className="learn-more-button"
@@ -52,7 +52,7 @@ export default function Component() {
             </button>
           </div>
 
-          <div className="flex items-center justify-center space-x-4 mt-5">
+          <div className="flex items-center justify-center space-x-4 mt-6 md:mt-5">
       <a href="https://www.producthunt.com/posts/youtube-detoxify?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-youtube&#0045;detoxify" target="_blank"><Image src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=485540&theme=dark" alt="Youtube&#0032;Detoxify - Have&#0032;control&#0032;over&#0032;what&#0032;you&#0032;surround&#0032;yourself&#0032;with&#0032;digitally&#0046; | Product Hunt" width="250" height="54" /></a>
 
       <Link href="https://github.com/jayprakash25/Digital-Detox" target="_blank" rel="noopener noreferrer">

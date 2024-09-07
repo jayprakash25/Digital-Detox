@@ -142,7 +142,7 @@ const CuratedFeedPage = () => {
 }
 
 const Header = () => (
-  <header className="sticky top-0 z-10 bg-[#0f0f0f]  pb-0 pt-1">
+  <header className="sticky top-0 z-10 bg-[#0f0f0f] mb-6  py-3">
     <div className="flex items-center md:p-4 justify-between">
       <div className="flex items-center space-x-4 cursor-pointer">
         <Youtube className="h-6 w-6 text-red-600" />
@@ -192,7 +192,7 @@ const UserMenu = () => (
 )
 
 const VideoPlayer = ({ video, onBack, isDescriptionExpanded, toggleDescription }: { video: VideoDetails, onBack: () => void, isDescriptionExpanded: boolean, toggleDescription: () => void }) => (
-  <div className="md:flex relative gap-8 md:gap-12 w-full max-w-6xl mx-auto py-12 md:py-16">
+  <div className="md:flex grid gap-y-5 relative gap-8 md:gap-12 w-full max-w-6xl mx-auto py-12 md:py-16">
     <div className="sticky top-0 rounded-lg md:max-w-2xl md:h-96 aspect-video">
       <iframe
         src={video.embedUrl}
@@ -240,7 +240,7 @@ const VideoGrid: React.FC<VideoGridProps> = ({ videos, loading, handleVideoClick
     ))}
     {(loading || hasMore) && (
       <div className="col-span-full">
-        <div className="grid grid-cols-3 gap-3 items-center p-4">
+        <div className="grid md:grid-cols-3 gap-3 items-center p-4">
         <VideoSkeleton />
         <VideoSkeleton />
         <VideoSkeleton />
