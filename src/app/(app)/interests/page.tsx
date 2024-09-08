@@ -245,7 +245,7 @@ const Interests: React.FC = () => {
                         Your Experience! Your Choice!
                       </h3>
                       <p className="text-gray-300 text-base md:text-lg">
-                        Choose up to 3 categories that you need to watch
+                        Choose up to 2 categories that you need to watch
                       </p>
                     </div>
                     <div className="flex flex-col md:flex-row w-full items-center justify-between text-sm gap-4">
