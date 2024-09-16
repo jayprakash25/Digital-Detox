@@ -262,7 +262,7 @@ const VideoCard = ({ video, onClick }: { video: VideoMetadata, onClick: () => vo
   <div className="space-y-2 cursor-pointer" onClick={onClick}>
     <div className="relative aspect-video">
       <Image
-      unomptimized
+        unoptimized
         src={video.thumbnail}
         alt={video.title}
         layout="fill"
