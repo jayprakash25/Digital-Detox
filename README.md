@@ -61,7 +61,7 @@ To enable Google Sign-In:
 6. Copy the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` and add them to your `.env.local` file:
 
 
-### 3. **KV_REST_API_TOKEN**, **KV_REST_API_READ_ONLY_TOKEN**, **KV_REST_API_URL**, and **KV_URL**: Vercel KV Setup
+### 3. Vercel KV Setup
 1. Go to the [Vercel dashboard](https://vercel.com/dashboard).
 2. Set up **Vercel KV** under **Storage**.
 3. Copy the following values from your Vercel KV instance:
