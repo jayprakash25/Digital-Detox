@@ -47,34 +47,6 @@ Welcome to YouTube Detoxify! We're excited to have you here. Whether you’re ne
 
 ---
 
-## Installation Guide for Local Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/jayprakash25/Digital-Detox.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd Digital-Detox
-   ```
-
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-4. Set up environment variables:
-   - Create a `.env.local` file by copying the content from `.env.example`.
-   - Fill in the necessary values for each variable in the `.env.local` file.
-
-5. Run the development server:
-   ```bash
-   npm run dev
-   ```
-
----
-
 ## What Can You Work On?
 
 We have a few ongoing tasks, and we'd love your help:
